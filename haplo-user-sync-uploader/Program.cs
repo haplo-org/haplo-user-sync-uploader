@@ -10,8 +10,6 @@ using System.Text;
 using System.Net;   // For WebClient
 using System.IO;    // For StreamReader
 
-
-
 namespace haplo_user_sync_uploader
 {
     class Program
@@ -20,13 +18,27 @@ namespace haplo_user_sync_uploader
         {
             // Fetch Windows environment variables, assigned externally by ...
             // SET HAPLO_SERVER = research.university.ac.uk
+            // SET HAPLO_API_KEY = ABCD1234ABCD1234ABCD1234ABCD1234ABCD1234ABCD1234
 
             var hostname = Environment.GetEnvironmentVariable("HAPLO_SERVER");
             var API = Environment.GetEnvironmentVariable("HAPLO_API_KEY");
 
-            // To do - check we have those initialised!
+            // Check we have those initialised!
+            // TODO: Return error codes as per https://msdn.microsoft.com/en-us/library/windows/desktop/ms681382(v=vs.85).aspx
 
-            // Typical invocation syntax would be ...
+            if ( String.IsNullOrEmpty(hostname) )
+            {
+                Console.WriteLine("HAPLO_SERVER environment variable has not been set.\n");
+                return;
+            }
+
+            if ( String.IsNullOrEmpty(API) )
+            {
+                Console.WriteLine("HAPLO_API_KEY environment variable has not been set.\n");
+                return;
+            }
+
+            // Check command line arguments. Typical invocation syntax would be ...
             //
             // haplo-user-sync-uploader file  students  path\to\ex_students.tsv
             // haplo-user-sync-uploader file  staff  path\to\ex_staff.tsv
