@@ -164,16 +164,21 @@ namespace haplo_user_sync_uploader
                 }
             }
 
-            // If any of the actual HTTP POSTs fail, we catch them here.
+            // Catch failing HTTP POSTs ...
             catch (WebException e)
             {
                 // Output the exception's plain text message ...
                 Console.WriteLine(e.Message);
 
-                // And fetch the textual response from the server.
-                var reader = new StreamReader(e.Response.GetResponseStream());
-                result = reader.ReadToEnd();
-                
+                // Fetch any textual response from the server.
+                // (The response may be null if the request didn't get that far - e.g. bad hostname.
+
+                if ( null != e.Response )
+                {
+                    var reader = new StreamReader(e.Response.GetResponseStream());
+                    result = reader.ReadToEnd();
+                }
+
             }
 
             // Let's see what we got.
