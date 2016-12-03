@@ -38,6 +38,21 @@ namespace haplo_user_sync_uploader
                 return;
             }
 
+            // Copy the command line arguments array into a list for simple parsing.
+            List<string> ArgList = new List<string>(args);
+
+            // If we want verbose
+            int Verbose = ArgList.IndexOf("--digest");
+
+            if (Verbose >= 0)
+            {
+                // Chatty mode enabled.
+                Console.WriteLine("HAPLO_SERVER={0}\nHAPLO_API_KEY={1}\n", hostname, API);
+
+                // Remove the flag from the list, leaving the other parameters in the expected order. 
+                ArgList.RemoveAt(Verbose);
+            }
+
             // Check command line arguments. Typical invocation syntax would be ...
             //
             // haplo-user-sync-uploader file  students  path\to\ex_students.tsv
@@ -49,7 +64,7 @@ namespace haplo_user_sync_uploader
             try
             {
                 // Do we have a command as our first parameter?
-                command = args[0].ToLower();
+                command = ArgList[0].ToLower();
             }
             catch
             {
@@ -81,8 +96,8 @@ namespace haplo_user_sync_uploader
                     try
                     {
                         // Do we have a name & filename as our second & third parameters?
-                        name = args[1];
-                        filename = args[2];
+                        name = ArgList[1];
+                        filename = ArgList[2];
                     }
                     catch
                     {
@@ -197,11 +212,12 @@ namespace haplo_user_sync_uploader
 
             }
 
-            // Let's see what we got.
-            // ToDo - make success quiet by default, but chatty on request.
-            
-            Console.WriteLine("{0}\n", result);
-
+            // Success is quiet by default, but chatty on request.
+            if (Verbose >= 0)
+            {
+                // Let's see what we got.
+                Console.WriteLine("{0}\n", result);
+            }
         }
     }
 }
