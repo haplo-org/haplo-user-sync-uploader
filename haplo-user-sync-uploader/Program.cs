@@ -60,8 +60,11 @@ namespace haplo_user_sync_uploader
 
             // We have a valid command - let's see whether we need a filename or not.
             string filename = "";
-            string method;
+            string method = "";
             string name = "";
+
+            // The default target 
+            string target = "/api/haplo-user-sync/";
 
             switch (command)
             {
@@ -101,12 +104,21 @@ namespace haplo_user_sync_uploader
                     break;
                 }
 
+                // Test command - n.
+                case "test":
+                {
+                    // When testing, we simply fetch the root on the server and leave the method empty.
+                    target = "/";
+                    break;
+                }
+
+
             }
 
             // Build target URI from hostname and method. Typical URI is ...
             // https:://dev5a36.infomanaged.co.uk/api/haplo-user-sync/upload-file 
 
-            string uri = "https://" + hostname + "/api/haplo-user-sync/" + method;
+            string uri = "https://" + hostname + target + method;
 
             // Our web client.
             WebClient webClient = new WebClient();
@@ -121,10 +133,15 @@ namespace haplo_user_sync_uploader
             // haplo:APIKEYAPIKEYAPIKEYAPIKEYAPIKEY
 
             var bytes = Encoding.UTF8.GetBytes("haplo:"+ API);
-
+           
             var auth = "Basic " + Convert.ToBase64String(bytes);
 
-            webClient.Headers.Add("Authorization", auth);
+            // We only send the auth header if we have a method that requires it ...
+            // i.e. if we're accessing the Haplo API - not if we're doing a test GET request.
+            if (!String.IsNullOrEmpty(method))
+            {
+                webClient.Headers.Add("Authorization", auth);
+            }
 
             // So, having added all our headers and constructed the target URL,
             // we invoke the appropriate method for the command specified.
@@ -133,7 +150,7 @@ namespace haplo_user_sync_uploader
 
             try
             {
-                   switch (method)
+                switch (method)
                 {
                     // User has specified 'file' command.
                     case "upload-file":
@@ -153,12 +170,12 @@ namespace haplo_user_sync_uploader
                         break;
                     }
 
-                    // Unknown or missing method - this is a REALLY weird and unexpect internal error!
-                    // Warn user, then exit.
+                    // Unknown or missing method - so we're doing a test.
                     default:
                     {
-                        Console.WriteLine("Problem while attempting to perform method \"{0}\" \n", method);
-                        return;
+                        // Testing means we just do a GET request on the root - quick and easy way to check we're using the right server!
+                        result = webClient.DownloadString(uri);
+                        break;
                     }
                 }
             }
@@ -182,7 +199,7 @@ namespace haplo_user_sync_uploader
 
             // Let's see what we got.
             // ToDo - make success quiet by default, but chatty on request.
-
+            
             Console.WriteLine("{0}\n", result);
 
         }
