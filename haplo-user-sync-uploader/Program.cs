@@ -78,12 +78,12 @@ namespace haplo_user_sync_uploader
                     try
                     {
                         // Do we have a name & filename as our second & third paramaters?
-                        name = args[1];         // NOT! Path.GetFileNameWithoutExtension(filename);
+                        name = args[1];
                         filename = args[2];
                     }
                     catch
                     {
-                        // Either filename provided, or the file doesn't exist - specify syntax, then exit.
+                        // Either no name provided, or missing filename - specify syntax, then exit.
                         Console.WriteLine("Missing or invalid filename\nSyntax: haplo-user-sync-uploader file [name] [filename]");
                         return;
                     }
@@ -98,7 +98,6 @@ namespace haplo_user_sync_uploader
                 {
                     // All we need to do is set the method.
                     method = "start-sync";
-
                     break;
                 }
 
@@ -119,10 +118,10 @@ namespace haplo_user_sync_uploader
             // Authorization: Basic ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+////=
             //
             // Where ABCD...////= is a Base64 encoded version of ...
-            // haplo: APIKEYAPIKEYAPIKEYAPIKEYAPIKEY
+            // haplo:APIKEYAPIKEYAPIKEYAPIKEYAPIKEY
 
             var bytes = Encoding.UTF8.GetBytes("haplo:"+ API);
-           
+
             var auth = "Basic " + Convert.ToBase64String(bytes);
 
             webClient.Headers.Add("Authorization", auth);
@@ -134,7 +133,7 @@ namespace haplo_user_sync_uploader
 
             try
             {
-                switch (method)
+                   switch (method)
                 {
                     // User has specified 'file' command.
                     case "upload-file":
@@ -183,7 +182,7 @@ namespace haplo_user_sync_uploader
 
             // Let's see what we got.
             // ToDo - make success quiet by default, but chatty on request.
-            
+
             Console.WriteLine("{0}\n", result);
 
         }
