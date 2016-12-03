@@ -48,7 +48,7 @@ namespace haplo_user_sync_uploader
 
             try
             {
-                // Do we have a command as our first paramater?
+                // Do we have a command as our first parameter?
                 command = args[0].ToLower();
             }
             catch
@@ -80,7 +80,7 @@ namespace haplo_user_sync_uploader
                 {
                     try
                     {
-                        // Do we have a name & filename as our second & third paramaters?
+                        // Do we have a name & filename as our second & third parameters?
                         name = args[1];
                         filename = args[2];
                     }
