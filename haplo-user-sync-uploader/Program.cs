@@ -17,8 +17,8 @@ namespace haplo_user_sync_uploader
         static void Main(string[] args)
         {
             // Fetch Windows environment variables, assigned externally by ...
-            // SET HAPLO_SERVER = research.university.ac.uk
-            // SET HAPLO_API_KEY = ABCD1234ABCD1234ABCD1234ABCD1234ABCD1234ABCD1234
+            // SET HAPLO_SERVER=research.university.ac.uk
+            // SET HAPLO_API_KEY=ABCD1234ABCD1234ABCD1234ABCD1234ABCD1234ABCD1234
 
             var hostname = Environment.GetEnvironmentVariable("HAPLO_SERVER");
             var API = Environment.GetEnvironmentVariable("HAPLO_API_KEY");
