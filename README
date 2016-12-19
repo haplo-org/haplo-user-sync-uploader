@@ -1,0 +1,86 @@
+haplo-user-sync-uploader
+========================
+
+Current web home: https://github.com/sdsolle/haplo-user-sync-uploader
+
+haplo-user-sync-uploader is a marvellous new Windows command-line utility for 
+uploading, without all that tedious mucking about in powershell.
+
+It can make zero or more file uploads with a given name argument, then 
+optionally make another request to tell the haplo service to use the uploads. 
+
+Certificates are tested properly, and it authenticates with HTTP Basic auth 
+using the fixed username 'haplo' and a configured API key as a password.
+
+It's compiled against .NET 2.0, so will run on /really/ ancient platforms if 
+need be.
+
+
+Configuration
+-------------
+
+At the windows command line, set the server name and API key as environment 
+variables:
+
+set HAPLO_SERVER=example.server.tld
+set HAPLO_API_KEY=ABCD1234ABCD1234ABCD1234ABCD1234ABCD1234ABCD1234
+
+[Note the absence of whitespace around the '=' sign. This is very
+ important - Windows will happily use spaces in variable names!] 
+
+
+Use
+---
+
+Syntax: haplo-user-sync-uploader command [name] [filename]
+
+Examples:
+
+haplo-user-sync-uploader file students path\to\students.tsv
+haplo-user-sync-uploader file staff path\to\staff.tsv
+haplo-user-sync-uploader apply
+
+Possible errors returned:
+
+ Missing command
+
+ Missing or invalid filename
+
+ The remote server returned an error: (400) Bad Request.
+ Sync in unexpected state -- use admin interface to resolve.
+
+ The remote server returned an error: (400) Bad Request.
+ Last sync is not ready. Upload all the required files.
+
+
+Building
+--------
+
+The utility was built using Microsoft Visual Studio 2013.
+
+It is deliberately configured to target .NET 2.0, meaning legacy platforms 
+won't need a new framework installing, nor the obligatory restart that 
+usually entails.
+
+If you're in any double, confirm that the .csproj file has the appropriate 
+reference to TargetFrameworkVersion of v2.0:
+
+<PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">
+      Debug
+    </Configuration>
+    {blah blah …}
+    
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+
+
+License
+-------
+
+(c) Haplo Services Ltd 2006 - 2016    http://www.haplo-services.com
+
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/
+
+Haplo Platform                                     http://haplo.org
