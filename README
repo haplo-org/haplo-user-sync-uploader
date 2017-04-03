@@ -3,11 +3,12 @@ haplo-user-sync-uploader
 
 Current web home: https://github.com/sdsolle/haplo-user-sync-uploader
 
-haplo-user-sync-uploader is a marvellous new Windows command-line utility for 
-uploading, without all that tedious mucking about in powershell.
+haplo-user-sync-uploader is a marvelous new Windows command-line utility
+for uploading to Haplo services, without all that tedious mucking about 
+in PowerShell.
 
 It can make zero or more file uploads with a given name argument, then 
-optionally make another request to tell the haplo service to use the uploads. 
+optionally make a further request to tell the Haplo service to use the uploads. 
 
 Certificates are tested properly, and it authenticates with HTTP Basic auth 
 using the fixed username 'haplo' and a configured API key as a password.
@@ -26,8 +27,8 @@ set HAPLO_SERVER=example.server.tld
 set HAPLO_API_KEY=ABCD1234ABCD1234ABCD1234ABCD1234ABCD1234ABCD1234
 
 [Note the absence of whitespace around the '=' sign. This is very
- important - Windows will happily use spaces in variable names!] 
-
+ important - Windows will happily use spaces in variable names!]
+ 
 
 Use
 ---
@@ -53,6 +54,30 @@ Possible errors returned:
  Last sync is not ready. Upload all the required files.
 
 
+Verbosity
+---------
+
+The tool's output is intentionally UNIXy, and is silent on success.
+
+If you want to see additional output, use the --digest option to make it
+far more chatty, e.g.
+
+haplo-user-sync-uploader --digest apply
+
+
+Troubleshooting
+---------------
+
+Invoking the utility with the 'test' command ...
+
+haplo-user-sync-uploader test
+
+... will make a GET request to https://{HAPLO_SERVER}/
+
+Servers that support SNI will return quietly on success, while attempts
+to access non-SNI sites will (correctly) return an error. 
+
+
 Building
 --------
 
@@ -62,7 +87,7 @@ It is deliberately configured to target .NET 2.0, meaning legacy platforms
 won't need a new framework installing, nor the obligatory restart that 
 usually entails.
 
-If you're in any double, confirm that the .csproj file has the appropriate 
+If you're in any doubt, confirm that the .csproj file has the appropriate 
 reference to TargetFrameworkVersion of v2.0:
 
 <PropertyGroup>
