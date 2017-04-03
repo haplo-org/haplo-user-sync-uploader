@@ -57,7 +57,7 @@ Possible errors returned:
 Verbosity
 ---------
 
-The tool's output is intentionally UNIXy, and is silent on success.
+The tool's output is intentionally UNIXy, so is silent on success.
 
 If you want to see additional output, use the --digest option to make it
 far more chatty, e.g.
@@ -102,7 +102,7 @@ reference to TargetFrameworkVersion of v2.0:
 License
 -------
 
-(c) Haplo Services Ltd 2006 - 2016    http://www.haplo-services.com
+(c) Haplo Services Ltd 2006 - 2017    http://www.haplo-services.com
 
 This Source Code Form is subject to the terms of the Mozilla Public
 License, v. 2.0. If a copy of the MPL was not distributed with this
