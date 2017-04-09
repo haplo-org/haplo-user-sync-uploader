@@ -41,7 +41,7 @@ namespace haplo_user_sync_uploader
             // Copy the command line arguments array into a list for simple parsing.
             List<string> ArgList = new List<string>(args);
 
-            // If we want verbose
+            // If user has specified the --digest flag anywhere on the command line, we want verbose output.
             int Verbose = ArgList.IndexOf("--digest");
 
             if (Verbose >= 0)
