@@ -9,11 +9,14 @@ using System.Collections.Generic;
 using System.Text;
 using System.Net;   // For WebClient
 using System.IO;    // For StreamReader
+using System.Net.Security;  // For SslPolicyErrors
 
 namespace haplo_user_sync_uploader
 {
     class Program
     {
+        public static int Verbose;
+
         static void Main(string[] args)
         {
             // Fetch Windows environment variables, assigned externally by ...
@@ -42,7 +45,7 @@ namespace haplo_user_sync_uploader
             List<string> ArgList = new List<string>(args);
 
             // If user has specified the --digest flag anywhere on the command line, we want verbose output.
-            int Verbose = ArgList.IndexOf("--digest");
+            Verbose = ArgList.IndexOf("--digest");
 
             if (Verbose >= 0)
             {
@@ -136,7 +139,7 @@ namespace haplo_user_sync_uploader
             string uri = "https://" + hostname + target + method;
 
             // Our web client.
-            WebClient webClient = new WebClient();
+            var webClient = new HaploWebClient();
 
             // Populate headers.
             webClient.Headers.Add("User-Agent", "Haplo User Sync Uploader");
@@ -220,4 +223,36 @@ namespace haplo_user_sync_uploader
             }
         }
     }
+
+    class HaploWebClient : WebClient
+    {
+        protected override WebRequest GetWebRequest(Uri url)
+        {
+            var request = (HttpWebRequest)base.GetWebRequest(url);
+
+            request.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) =>
+            {
+                if (sslPolicyErrors == SslPolicyErrors.None)
+                {
+                    // The certificate validated OK.
+                    return true;
+                }
+                else
+                {
+                    if (Program.Verbose >= 0)
+                    {
+                        foreach (var status in chain.ChainStatus)
+                        {
+                            Console.WriteLine(status.StatusInformation);
+                        }
+                    }
+                    // Make absolutely certain that we return an error.
+                    return false;
+                }
+            };
+
+            return request;
+        }
+    }
+
 }
