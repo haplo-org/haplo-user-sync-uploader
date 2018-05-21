@@ -228,6 +228,7 @@ namespace haplo_user_sync_uploader
         {
             var request = (HttpWebRequest)base.GetWebRequest(url);
 
+            // The ServerCertificateValidationCallback method is only available from .NET 4.5 onwards
             request.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) =>
             {
                 if (sslPolicyErrors == SslPolicyErrors.None)

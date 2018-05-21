@@ -81,28 +81,20 @@ to access non-SNI sites will (correctly) return an error.
 Building
 --------
 
-The utility was built using Microsoft Visual Studio 2013.
+This version of the utility was built using Microsoft Visual Studio 2017,
+and is configured to target the .NET 4.5 platform - the earliest version
+that supports server certificate validation callbacks in WebClient - see:
+https://msdn.microsoft.com/en-us/library/system.net.httpwebrequest.servercertificatevalidationcallback(v=vs.110).aspx
 
-It is deliberately configured to target .NET 2.0, meaning legacy platforms 
-won't need a new framework installing, nor the obligatory restart that 
+
+Earlier releases were deliberately configured to target .NET 2.0, meaning legacy platforms 
+wouldn't need a new framework installing, nor the obligatory restart that 
 usually entails.
-
-If you're in any doubt, confirm that the .csproj file has the appropriate 
-reference to TargetFrameworkVersion of v2.0:
-
-<PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">
-      Debug
-    </Configuration>
-    {blah blah …}
-    
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
-
 
 License
 -------
 
-(c) Haplo Services Ltd 2006 - 2017    http://www.haplo-services.com
+(c) Haplo Services Ltd 2006 - 2018    http://www.haplo-services.com
 
 This Source Code Form is subject to the terms of the Mozilla Public
 License, v. 2.0. If a copy of the MPL was not distributed with this
