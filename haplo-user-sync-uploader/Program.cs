@@ -15,8 +15,6 @@ namespace haplo_user_sync_uploader
 {
     class Program
     {
-        public static int Verbose;
-
         static void Main(string[] args)
         {
             // Fetch Windows environment variables, assigned externally by ...
@@ -45,7 +43,7 @@ namespace haplo_user_sync_uploader
             List<string> ArgList = new List<string>(args);
 
             // If user has specified the --digest flag anywhere on the command line, we want verbose output.
-            Verbose = ArgList.IndexOf("--digest");
+            int Verbose = ArgList.IndexOf("--digest");
 
             if (Verbose >= 0)
             {
@@ -239,12 +237,9 @@ namespace haplo_user_sync_uploader
                 }
                 else
                 {
-                    if (Program.Verbose >= 0)
+                    foreach (var status in chain.ChainStatus)
                     {
-                        foreach (var status in chain.ChainStatus)
-                        {
-                            Console.WriteLine(status.StatusInformation);
-                        }
+                        Console.WriteLine(status.StatusInformation);
                     }
                     // Make absolutely certain that we return an error.
                     return false;
@@ -254,5 +249,4 @@ namespace haplo_user_sync_uploader
             return request;
         }
     }
-
 }
