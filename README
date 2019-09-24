@@ -13,9 +13,6 @@ optionally make a further request to tell the Haplo service to use the uploads.
 Certificates are tested properly, and it authenticates with HTTP Basic auth 
 using the fixed username 'haplo' and a configured API key as a password.
 
-It's compiled against .NET 2.0, so will run on /really/ ancient platforms if 
-need be.
-
 
 Configuration
 -------------
@@ -81,15 +78,18 @@ to access non-SNI sites will (correctly) return an error.
 Building
 --------
 
-This version of the utility was built using Microsoft Visual Studio 2017,
-and is configured to target the .NET 4.5 platform - the earliest version
-that supports server certificate validation callbacks in WebClient - see:
+This version of the utility was built using Microsoft Visual Studio 2015,
+and is configured to target the .NET 4.7 platform, which is the oldest version
+that supports TLSv1.2 - see:
+https://docs.microsoft.com/en-us/dotnet/framework/network-programming/tls
+
+The earliest version that supported server certificate validation callbacks
+in WebClient was .NET 4.5 - see:
 https://msdn.microsoft.com/en-us/library/system.net.httpwebrequest.servercertificatevalidationcallback(v=vs.110).aspx
 
-
-Earlier releases were deliberately configured to target .NET 2.0, meaning legacy platforms 
-wouldn't need a new framework installing, nor the obligatory restart that 
-usually entails.
+Earlier releases were deliberately configured to target .NET 2.0, meaning
+legacy platforms wouldn't need a new framework installing, nor the obligatory
+restart that usually entails.
 
 License
 -------
