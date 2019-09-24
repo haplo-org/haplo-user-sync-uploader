@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Net;   // For WebClient
 using System.IO;    // For StreamReader
+using System.Net.Security;  // For SslPolicyErrors
 
 namespace haplo_user_sync_uploader
 {
@@ -136,7 +137,7 @@ namespace haplo_user_sync_uploader
             string uri = "https://" + hostname + target + method;
 
             // Our web client.
-            WebClient webClient = new WebClient();
+            var webClient = new HaploWebClient();
 
             // Populate headers.
             webClient.Headers.Add("User-Agent", "Haplo User Sync Uploader");
@@ -218,6 +219,35 @@ namespace haplo_user_sync_uploader
                 // Let's see what we got.
                 Console.WriteLine("{0}\n", result);
             }
+        }
+    }
+
+    class HaploWebClient : WebClient
+    {
+        protected override WebRequest GetWebRequest(Uri url)
+        {
+            var request = (HttpWebRequest)base.GetWebRequest(url);
+
+            // The ServerCertificateValidationCallback method is only available from .NET 4.5 onwards
+            request.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) =>
+            {
+                if (sslPolicyErrors == SslPolicyErrors.None)
+                {
+                    // The certificate validated OK.
+                    return true;
+                }
+                else
+                {
+                    foreach (var status in chain.ChainStatus)
+                    {
+                        Console.WriteLine(status.StatusInformation);
+                    }
+                    // Make absolutely certain that we return an error.
+                    return false;
+                }
+            };
+
+            return request;
         }
     }
 }
